@@ -42,7 +42,7 @@ Click on one of the categories in order to proceed with the configuration.
 
 # Frequently asked questions (FAQ)
 
-### How can we download the documentation loaded on OpenProject?
+### How can we export the documents loaded on OpenProject?
 
 Currently, there is unfortunately no option to export all the documents in OpenProject. We could manually export the entire database (including the attachments) for you. Due to the manual effort, we would however need to charge a service fee for this. Please contact sales@openproject.com.
 
