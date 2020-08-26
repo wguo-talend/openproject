@@ -130,6 +130,26 @@ class ServiceResult
     yield(self) if failure?
   end
 
+  def each
+    yield result if success?
+  end
+
+  def map
+    return self if failure?
+
+    dup.tap do |new_result|
+      new_result.result = yield result
+    end
+  end
+
+  def to_a
+    if success?
+      [result]
+    else
+      []
+    end
+  end
+
   def message
     if @message
       @message

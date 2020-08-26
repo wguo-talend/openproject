@@ -35,9 +35,18 @@ module Projects::Copy
     # Copies queries from +project+
     # Only includes the queries visible in the wp table view.
     def copy_dependency(params:)
+      query_id_map = {}
       source.queries.non_hidden.includes(:query_menu_item).each do |query|
-        duplicate_query(query, params)
+        copy = duplicate_query(query, params)
+
+        # Either assign the succesfully copied query's ID or nil to indicate
+        # that this query could not be copeid.
+        query_id_map[query.id] = copy.map(&:id).to_a.first
+
+        copy.on_failure { |result| add_error! query, result.errors }
       end
+
+      state.query_id_lookup = query_id_map
     end
 
     def duplicate_query(query, params)
@@ -45,10 +54,6 @@ module Projects::Copy
         .new(source: query, user: user)
         .with_state(state)
         .call(params.merge)
-        .on_failure do |result|
-
-        add_error! query, result.errors
-      end
     end
   end
 end
